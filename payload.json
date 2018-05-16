@@ -1,0 +1,8 @@
+{
+"recordings":["77951604","77951513","77860949"],
+"engineId":"9084f686-cf02-41c5-adb5-d48fb6558d77",
+"fromStatus":"pending",
+"toStatus":"failed",
+"token":"",
+"veritoneApiBaseUrl": "https://api.veritone.com"
+}
