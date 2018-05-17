@@ -1,23 +1,64 @@
 # task-status-update
 
+
+## Setting up to build go
+
+See this https://steel-ventures.atlassian.net/wiki/spaces/VT/pages/8454186/Setup+development+environment
+
+And look for the `GO specifics` section
+
+
+In addition, make sure you have access to the repo https://github.com/veritone/go-veritone-api or practically ask Veritone DevOp to add you to the `InternalDevelopers` group
+
+
+
+## Setting up locally
+
+After setting up go,
+
+```
+go get github.com/quynhdang-vt/task-sttatus-update
+```
+
+Assuming that you have access to a number of Veritone private repos, this should clone this repo and dependency to your local $GOPATH/src directory
+
+
+Once that's cloned, to work with this tool, open a terminal window and ..
+
+```
+cd $GOPATH/src/github.com/quynhdang-vt/task-status-update
+```
+
+
 ## To build:
 
 ```
 make -f Makefile.inContainer dev
 ```
 
+This will create the `task-status-update` executable
 
 ## Usage:
+
+Make sure to prepare a `payload.json` file.  See [payload](#payload_json)
 
 ```
 ./task-status-update -payload payload.json
 ```
 
 
-## payload.json
+## payload.json<a name=payload_json></a>
 
-Contains the ids of the recordings which contain tasks with engines stuck in a certain `status` and need to be moved to a new status
-Token: need to be able to check jobs!!
+| field name | Notes |
+|------------|-------|
+|recordings | JSON array of strings containing the recording ids to be modified }|
+| engineId | engine Id or GUID executing the tasks that you want to modify status. |
+| fromStatus | current status of the task, typically "pending" or "running" |
+| toStatus | the new status to move the task to, typically "failed" or "complete" |
+| token | API token -- must have enough priv, e.g. "recording:read, job:all" |
+| veritoneApiBaseUrl | for Prod :  "https://api.veritone.com".  For uk-prod: "https://api.uk.veritone.com |
+
+
 
 
 Examples
