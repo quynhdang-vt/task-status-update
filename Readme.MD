@@ -17,10 +17,10 @@ In addition, make sure you have access to the repo https://github.com/veritone/g
 After setting up go,
 
 ```
-go get github.com/quynhdang-vt/task-sttatus-update
+go get github.com/quynhdang-vt/task-status-update
 ```
 
-Assuming that you have access to a number of Veritone private repos, this should clone this repo and dependency to your local $GOPATH/src directory
+Assuming that you have access to a number of Veritone private repos, this command should clone this repo and dependencies to your local $GOPATH/src directory
 
 
 Once that's cloned, to work with this tool, open a terminal window and ..
