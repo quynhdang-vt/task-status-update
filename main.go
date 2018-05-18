@@ -28,11 +28,11 @@ import (
 
 type ConductorTaskPayload struct {
 	EngineId           string   `json:"engineId"`
-	Recordings         []string `json:"recordings`
+	Recordings         []string `json:"recordings"`
 	VeritoneApiBaseUrl string   `json:"veritoneApiBaseUrl"`
 	Token              string   `json:"token, omitempty"`
 	FromStatus         string   `json:"fromStatus"`
-	ToStatus           string   `json:"toStatus""`
+	ToStatus           string   `json:"toStatus"`
 }
 
 func (p ConductorTaskPayload) String() string {
