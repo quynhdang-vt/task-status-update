@@ -49,16 +49,14 @@ func toString(o interface{}) string {
 }
 
 // Error reporting and also set the status to failing
-func updateTask(vtClient *vt.APIClient, jobId string, taskId string, status vt.TaskStatus, taskOutput interface{}) {
-	fmt.Printf("updateTask jobId=%v, taskId=%v, status=%v, output=%v\n", jobId, taskId, status, toString(taskOutput))
+func updateTask(vtClient *vt.APIClient, jobId string, taskId string, status vt.TaskStatus, taskOutput interface{}, recordingId string) {
+	fmt.Printf("Recording Id=%s updateTask jobId=%v, taskId=%v, status=%v, output=%v\n", recordingId, jobId, taskId, status, toString(taskOutput))
 
 	err := vtClient.UpdateTaskStatus(context.Background(), jobId, taskId, status, taskOutput)
 	if err != nil {
-		fmt.Printf("Failed to update taskStatus to %v: %s\n", status, err)
-	}
-
-	if status == vt.TaskStatusFailed {
-		log.Printf("Updating fail...%v", taskOutput)
+		fmt.Printf("Recording Id=%s Failed to update taskStatus to %v: %s\n", recordingId, status, err)
+	} else {
+		log.Printf("Recording Id=%s Successfully updated task status to %v\n", recordingId, status)
 	}
 }
 
@@ -115,6 +113,7 @@ func main() {
 	if err := worker.PayloadFromJSON(payload); err != nil {
 		log.Fatalf("Failed to parse JSON-encoded task payload: %s", err.Error())
 	}
+	log.Printf("Got payload: %s\n", payload)
 	if payload.EngineId == "" || payload.Recordings == nil || payload.FromStatus == "" || payload.ToStatus == "" || payload.Token == "" {
 		log.Fatalln("Missing required fields in task payload")
 	}
@@ -139,7 +138,7 @@ func main() {
 					recordingId, e.TaskId, e.EngineId, e.Status)
 				// update status accordingly
 				output := toMsgMap(fmt.Sprintf("Auto setting status from %v to %v", e.Status, payload.ToStatus))
-				updateTask(vtClient, e.JobId, e.TaskId, vt.TaskStatus(payload.ToStatus), output)
+				updateTask(vtClient, e.JobId, e.TaskId, vt.TaskStatus(payload.ToStatus), output, recordingId)
 				if err != nil {
 					fmt.Printf("Failed to update taskStatus from %v to %v: %s\n", e.Status, payload.ToStatus, err)
 				}
